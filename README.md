@@ -75,20 +75,6 @@ docker images localstack-deployment-app:latest
 Expected: Image size around 50–60MB (optimized multi-stage build)
 
 ---
-###  Step 5: Verify Application & Load Balancer
-
-Test HTTP (Should return 301 redirect)
-```bash
-curl.exe -I "http://my-app-alb.elb.localhost.localstack.cloud:4566"
-```
-
-Test HTTPS (Should return app response)
-
-```bash
-curl.exe --insecure "https://my-app-alb.elb.localhost.localstack.cloud:4566"
-```
-
----
 
 ##  Advanced Configurations & Testing
 
@@ -143,6 +129,20 @@ python generate_cost_report.py
 ```
  Output file: cost_report.csv
 
+
+---
+###  Step 8: Verify Application & Load Balancer
+
+Test HTTP (Should return 301 redirect)
+```bash
+curl.exe -I "http://my-app-alb.elb.localhost.localstack.cloud:4566"
+```
+
+Test HTTPS (Should return app response)
+
+```bash
+curl.exe --insecure "https://my-app-alb.elb.localhost.localstack.cloud:4566"
+```
 ---
 
 ##  Cleanup
