@@ -69,7 +69,7 @@ Note: The aws_setup container waits for LocalStack to become healthy, executes s
 ###  Step 4: Verify the Optimized Docker Image
 
 ```bash
-docker images my-app
+docker images localstack-deployment-app:latest
 ```
 
 Expected: Image size around 50–60MB (optimized multi-stage build)
