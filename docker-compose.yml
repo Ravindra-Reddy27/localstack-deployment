@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # 1. The AWS Emulator
+  localstack:
+    image: localstack/localstack-pro:latest
+    container_name: localstack_main
+    ports:
+      - "4566:4566"            
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - DEFAULT_REGION=us-east-1
+      - LOCALSTACK_AUTH_TOKEN=${LOCALSTACK_AUTH_TOKEN}
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    healthcheck:
+      test: ["CMD", "curl", "-s", "http://localhost:4566/_localstack/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 2. Our Application
+  app:
+    build: .
+    container_name: fastapi_app
+    ports:
+      - "8000:8000"
+    depends_on:
+      localstack:
+        condition: service_healthy # Won't start until LocalStack is ready
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # 3. The Infrastructure Builder
+  setup:
+    image: amazon/aws-cli:latest
+    container_name: aws_setup
+    depends_on:
+      localstack:
+        condition: service_healthy # Waits for LocalStack to be healthy
+    volumes:
+      - ./setup.sh:/setup.sh       # Mounts our local script into the container
+    environment:
+      - AWS_ACCESS_KEY_ID=test     # LocalStack accepts dummy credentials
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_DEFAULT_REGION=us-east-1
+    # Run the script when the container starts
+    entrypoint: /bin/sh -c "chmod +x /setup.sh && /setup.sh"
+    healthcheck:
+      test: ["CMD", "aws", "--version"]
+      interval: 10s
+      timeout: 5s
+      retries: 3

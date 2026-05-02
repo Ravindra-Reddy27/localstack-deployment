@@ -1,0 +1,3 @@
+Service,ResourceType,ResourceID,CostCenter,Team
+ec2,launch-template,lt-ed7e5b697e2f6e541,CC-101,DevOps
+ec2,instance,i-d4690f416f3099d9a,CC-101,DevOps

@@ -1,0 +1,10 @@
+# Set default behavior to automatically normalize line endings
+* text=auto
+
+# Force shell scripts to ALWAYS use LF (Linux) line endings
+*.sh text eol=lf
+
+# Force configuration files to use LF
+*.yml text eol=lf
+*.yaml text eol=lf
+Dockerfile text eol=lf

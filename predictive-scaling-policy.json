@@ -1,0 +1,11 @@
+{
+  "MetricSpecifications": [
+    {
+      "TargetValue": 50.0,
+      "PredefinedMetricPairSpecification": {
+        "PredefinedMetricType": "ASGCPUUtilization"
+      }
+    }
+  ],
+  "Mode": "ForecastAndScale"
+}
